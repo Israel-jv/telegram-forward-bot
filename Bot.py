@@ -2,6 +2,9 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
+print("BOT_TOKEN from env:", os.getenv("BOT_TOKEN"))
+print("FORWARD_CHAT_ID from env:", os.getenv("FORWARD_CHAT_ID"))
+
 TOKEN = os.getenv("BOT_TOKEN")
 FORWARD_CHAT_ID = int(os.getenv("FORWARD_CHAT_ID"))
 
@@ -21,3 +24,4 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT | filters.VOICE, forward_message))
     app.run_polling()
+
