@@ -1,9 +1,14 @@
 #!/bin/bash
-# Remove old caches just in case
-rm -rf .venv __pycache__ 
 
-# Install dependencies fresh
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Upgrade pip and install dependencies inside the venv
+pip install --upgrade pip
 pip install -r requirements.txt
 
-# Start the bot
-python Bot.py
+# Run the bot using the venv's python
+venv/bin/python Bot.py
