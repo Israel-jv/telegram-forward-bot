@@ -7,6 +7,6 @@ services:
     startCommand: "python Bot.py"
     envVars:
       - key: BOT_TOKEN
-        value: '8289064969:AAEyirLo6aM14HJYw2vgFHfkQP_T7kUubg8'
+        value: 8289064969:AAEyirLo6aM14HJYw2vgFHfkQP_T7kUubg8
       - key: FORWARD_CHAT_ID
-        value: '6335294113'
+        value: 6335294113
