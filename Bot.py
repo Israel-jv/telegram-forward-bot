@@ -2,9 +2,6 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-print("BOT_TOKEN from env:", os.getenv("BOT_TOKEN"))
-print("FORWARD_CHAT_ID from env:", os.getenv("FORWARD_CHAT_ID"))
-
 TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     raise ValueError("BOT_TOKEN environment variable is not set")
@@ -27,7 +24,10 @@ async def forward_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 if __name__ == "__main__":
+    print("Starting bot...")
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT | filters.VOICE, forward_message))
-    app.run_polling()
+    
+    print("Bot is running!")
+    app.run_polling(drop_pending_updates=True)
