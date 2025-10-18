@@ -1,9 +1,7 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 import os
-import asyncio
+from telegram import Update
+from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
-# Get token and chat ID from environment variables
 TOKEN = os.getenv("BOT_TOKEN")
 FORWARD_CHAT_ID = int(os.getenv("FORWARD_CHAT_ID"))
 
@@ -17,18 +15,12 @@ async def forward_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 message_id=update.message.message_id
             )
         elif update.message.text:
-            text = f"📩 From @{update.message.from_user.username or 'Unknown'}:\n{update.message.text}"
+            sender = update.message.from_user.username or "Unknown"
+            text = f"📩 Message from @{sender}:\n\n{update.message.text}"
             await context.bot.send_message(chat_id=FORWARD_CHAT_ID, text=text)
 
-async def main():
-    print("🚀 Bot is starting...")
-    application = ApplicationBuilder().token(TOKEN).build()
-
-    # Handle both voice and text
-    application.add_handler(MessageHandler(filters.TEXT | filters.VOICE, forward_message))
-
-    print("🤖 Bot is running...")
-    await application.run_polling()  # <-- this keeps it alive
-
 if __name__ == "__main__":
-    asyncio.run(main())
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(MessageHandler(filters.TEXT | filters.VOICE, forward_message))
+    print("🤖 Bot is running...")
+    app.run_polling()
