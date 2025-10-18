@@ -1,3 +1,4 @@
+
 import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
@@ -6,10 +7,17 @@ print("BOT_TOKEN from env:", os.getenv("BOT_TOKEN"))
 print("FORWARD_CHAT_ID from env:", os.getenv("FORWARD_CHAT_ID"))
 
 TOKEN = os.getenv("BOT_TOKEN")
-FORWARD_CHAT_ID = int(os.getenv("FORWARD_CHAT_ID"))
+if not TOKEN:
+    raise ValueError("BOT_TOKEN environment variable is not set")
+
+FORWARD_CHAT_ID_STR = os.getenv("FORWARD_CHAT_ID")
+if not FORWARD_CHAT_ID_STR:
+    raise ValueError("FORWARD_CHAT_ID environment variable is not set")
+FORWARD_CHAT_ID = int(FORWARD_CHAT_ID_STR)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("✅ Bot is running and ready to forward messages!")
+    if update.message:
+        await update.message.reply_text("✅ Bot is running and ready to forward messages!")
 
 async def forward_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message and (update.message.text or update.message.voice):
