@@ -44,3 +44,5 @@ if __name__ == "__main__":
         print("Bot started (assuming bot.py runs on import).")
 
     print("Bot should now be running and Flask server is live.")
+
+
