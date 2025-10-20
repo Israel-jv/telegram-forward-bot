@@ -1,48 +1,28 @@
-# main.py
 import os
 from threading import Thread
 from flask import Flask
-import bot  # your existing bot.py file
+import bot  # your existing bot.py
 
-# --- Simple Flask server to keep the bot alive ---
+# --- Flask server to keep the bot alive ---
 app = Flask(__name__)
-
 
 @app.route('/')
 def home():
-    return "Bot is alive!"  # UptimeRobot will see this
-
+    return "Bot is alive!"
 
 def run_flask():
-    # Replit uses PORT environment variable; default to 8080
-    port = int(os.environ.get("PORT", 8080))
+    port = int(os.environ.get("PORT"))  # Railway sets this automatically
     app.run(host="0.0.0.0", port=port)
 
+# Start Flask in a thread
+flask_thread = Thread(target=run_flask)
+flask_thread.start()  # Do NOT make it daemon
 
-# --- Start the web server in a separate thread ---
-def keep_alive():
-    t = Thread(target=run_flask)
-    t.daemon = True  # ensures Flask thread exits if bot stops
-    t.start()
-
-
-# --- Run the bot and the webserver together ---
+# --- Run the bot ---
 if __name__ == "__main__":
-    keep_alive()
-    print("✅ Web server running... Now starting bot.")
-
-    # --- Run your bot.py main function ---
-    # Make sure bot.py has something like:
-    # if __name__ == "__main__":
-    #     app.run_polling()
-    # If not, call the polling function here directly
+    print("✅ Web server starting...")
     try:
-        # If your bot.py has a function called main() to start the bot
-        bot.main()
+        bot.main()  # Make sure bot.py has a main() function
     except AttributeError:
-        # fallback: maybe your bot.py runs automatically on import
         print("Bot started (assuming bot.py runs on import).")
-
-    print("Bot should now be running and Flask server is live.")
-
-
+    print("✅ Bot should now be running and Flask server live.")
