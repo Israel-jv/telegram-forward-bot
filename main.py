@@ -10,6 +10,7 @@ app = Flask(__name__)
 def home():
     return "Bot is alive!"
 
+
 def run_flask():
     port = int(os.environ.get("PORT"))  # Railway sets this automatically
     app.run(host="0.0.0.0", port=port)
