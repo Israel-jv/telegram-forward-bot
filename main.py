@@ -21,6 +21,7 @@ flask_thread.start()  # Do NOT make it daemon
 # --- Run the bot ---
 if __name__ == "__main__":
     print("✅ Web server starting...")
+    
     try:
         bot.main()  # Make sure bot.py has a main() function
     except AttributeError:
